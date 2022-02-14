@@ -1,0 +1,27 @@
+# 生产环境配置
+
+# Spring配置
+spring:
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: false
+  # 数据源配置
+  datasource:
+    druid:
+      # 主库数据源
+      master:
+        url: jdbc:mysql://db:3306/health_station?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        password: 666888
+
+  # redis 配置
+  redis:
+    # 地址
+    host: redis
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: false
