@@ -1,0 +1,93 @@
+kind: pipeline
+type: docker
+name: hs-backend-ci
+
+steps:
+  # 打包
+  - name: mvn-package
+    pull: if-not-exists
+    image: maven:3.6.1-jdk-8-alpine
+    volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设置
+      # 将maven下载依赖的目录挂载出来，防止重复下载
+      - name: maven-cache
+        path: /root/.m2
+      # 将应用打包好的Jar和执行脚本挂载出来
+      - name: backend-temp
+        path: /app
+    commands:
+      - mvn clean package -Dmaven.test.skip=true
+      - cp backend-admin/target/backend-admin.jar /app/backend-admin.jar
+      - cp .env /app/.env
+      - cp Dockerfile /app/Dockerfile
+      - cp docker-compose.yml /app/docker-compose.yml
+      - cp deploy.sh /app/deploy.sh
+
+  # 构建镜像并部署运行
+  - name: docker-deploy
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: ssh_host
+      username: root
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 10m # 远程执行命令超时时间
+      script_stop: false # 设置为false，遇到第一次错误会继续运行后面的命令
+      script:
+        - cd /app/health-station/backend # 进入宿主机构建目录,可根据自己选择目录
+        - chmod +x deploy.sh # 更改为可执行脚本
+        - ./deploy.sh # 运行脚本打包应用镜像并运行
+
+  # 钉钉通知
+  - name: dingtalk-notice
+    image: lddsb/drone-dingtalk-message
+    settings:
+      token:
+        from_secret: dingtalk_token
+      secret:
+        from_secret: dingtalk_secret
+      type: markdown
+      tips_title: hs-backend-ci-info
+      success_color: 09c270
+      failure_color: ff3c3c
+      tpl_build_status_success: "======== √  SUCCESS ========"
+      tpl_build_status_failure: "======== ×  FAILURE ========"
+      debug: true
+      tpl: |
+        ## <font color=[TPL_STATUS_COLOR]> [TPL_BUILD_STATUS] </font>
+        
+        ### 📁 [TPL_REPO_SHORT_NAME]
+        
+        > 👨 [TPL_AUTHOR_NAME] | 🔀 [TPL_COMMIT_BRANCH] | ⏱️ `[TPL_BUILD_CONSUMING]s`
+        ___
+        
+        💬 **Commit Message**
+        
+        > [TPL_COMMIT_MSG]
+        ___
+        
+        👇 **Detail**
+        
+        [🔗 Committed Code Detail Page]([TPL_COMMIT_LINK])
+        
+        [🔗 The Build Detail Page [TPL_STATUS_EMOTICON]]([TPL_BUILD_LINK])
+        ___
+    when:
+      status: [ success,failure ]
+
+
+volumes: # 定义流水线挂载目录，用于共享数据
+  - name: backend-temp
+    host:
+      path: /app/health-station/backend
+  - name: maven-cache
+    host:
+      path: /app/health-station/backend/.m2
+
+# drone执行触发分支
+trigger:
+  branch:
+    - master
+  event:
+    - push
