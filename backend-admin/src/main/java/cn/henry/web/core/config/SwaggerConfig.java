@@ -85,7 +85,7 @@ public class SwaggerConfig {
      */
     private List<SecurityScheme> securitySchemes() {
         List<SecurityScheme> apiKeyList = new ArrayList<>();
-        apiKeyList.add(new ApiKey(tokenConfig.getHeader(), tokenConfig.getHeader(), In.HEADER.toValue()));
+        apiKeyList.add(new ApiKey(TokenConfig.getHeader(), TokenConfig.getHeader(), In.HEADER.toValue()));
         return apiKeyList;
     }
 
@@ -110,7 +110,7 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference(tokenConfig.getHeader(), authorizationScopes));
+        securityReferences.add(new SecurityReference(TokenConfig.getHeader(), authorizationScopes));
         return securityReferences;
     }
 
