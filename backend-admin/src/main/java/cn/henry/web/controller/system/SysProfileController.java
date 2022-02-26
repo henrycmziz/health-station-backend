@@ -114,12 +114,13 @@ public class SysProfileController extends BaseController {
             if (userService.updateUserAvatar(loginUser.getUsername(), avatar)) {
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", avatar);
-                // 删除旧的头像
-                FileUtils.deleteFile(loginUser.getUser().getAvatar());
+                // 删除旧的头像,如果存在
+                if (StringUtils.isNotEmpty(loginUser.getUser().getAvatar())) {
+                    FileUtils.deleteFile(loginUser.getUser().getAvatar());
+                }
                 // 更新缓存用户头像
                 loginUser.getUser().setAvatar(avatar);
                 tokenService.setLoginUser(loginUser);
-
                 return ajax;
             }
         }

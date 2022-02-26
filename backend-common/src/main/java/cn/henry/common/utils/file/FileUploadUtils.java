@@ -102,7 +102,8 @@ public class FileUploadUtils {
         File desc = getAbsoluteFile(baseDir, extractFileName);
         file.transferTo(desc);
         String pathFileName = getPathFileName(baseDir, extractFileName);
-        return new FileInfo(fileName.substring(0, fileName.lastIndexOf(".")), getExtension(file), extractFileName, pathFileName);
+        return new FileInfo(fileName.substring(0, fileName.lastIndexOf(".") == -1 ? fileNameLength : fileName.lastIndexOf(".")),
+                FilenameUtils.getExtension(fileName), extractFileName, pathFileName);
     }
 
     /**
