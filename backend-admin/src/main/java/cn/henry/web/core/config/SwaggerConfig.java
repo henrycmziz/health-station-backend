@@ -36,12 +36,6 @@ public class SwaggerConfig {
     private BackendConfig backendConfig;
 
     /**
-     * token配置
-     */
-    @Resource
-    private TokenConfig tokenConfig;
-
-    /**
      * 是否开启swagger
      */
     @Getter

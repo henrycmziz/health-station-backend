@@ -1,5 +1,4 @@
 # 连接远程db环境配置
-
 server:
   port: 8081
 
@@ -18,15 +17,3 @@ spring:
         url: jdbc:mysql://116.62.205.26:3307/health_station?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         username: root
         password: 666888
-
-  # redis 配置
-  redis:
-    # 地址
-    host: 116.62.205.26
-    # 端口，默认为6379
-    port: 6380
-
-# Swagger配置
-swagger:
-  # 是否开启swagger
-  enabled: false

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.resource.mapper.VideoMapper">
+
+    <resultMap type="Video" id="VideoLibResult">
+        <result property="id"    column="id"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="extendType"    column="extend_type"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="videoThumbnailUrl"    column="video_thumbnail_url"    />
+        <result property="videoDuration"    column="video_duration"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectVideoLibVo">
+        select id, video_url, extend_type, file_name, video_thumbnail_url, video_duration, remark, status, create_by, create_time, update_by, update_time from hs_video_lib
+    </sql>
+
+    <select id="selectVideoLibList" parameterType="Video" resultMap="VideoLibResult">
+        <include refid="selectVideoLibVo"/>
+        <where>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectVideoLibById" parameterType="Long" resultMap="VideoLibResult">
+        <include refid="selectVideoLibVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVideoLib" parameterType="Video" useGeneratedKeys="true" keyProperty="id">
+        insert into hs_video_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="videoUrl != null and videoUrl != ''">video_url,</if>
+            <if test="extendType != null and extendType != ''">extend_type,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="videoThumbnailUrl != null">video_thumbnail_url,</if>
+            <if test="videoDuration != null">video_duration,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="videoUrl != null and videoUrl != ''">#{videoUrl},</if>
+            <if test="extendType != null and extendType != ''">#{extendType},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="videoThumbnailUrl != null">#{videoThumbnailUrl},</if>
+            <if test="videoDuration != null">#{videoDuration},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVideoLib" parameterType="Video">
+        update hs_video_lib
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVideoLibById" parameterType="Long">
+        delete from hs_video_lib where id = #{id}
+    </delete>
+
+    <delete id="deleteVideoLibByIds" parameterType="String">
+        delete from hs_video_lib where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

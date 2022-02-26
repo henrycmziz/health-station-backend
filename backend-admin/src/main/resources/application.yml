@@ -8,10 +8,8 @@ backend:
   version: 1.0.0
   # 版权年份
   copyrightYear: 2022
-  # 实例演示开关
-  demoEnabled: true
-  # 文件路径 示例（ Windows配置 /app/uploadPath，Linux配置 /app/uploadPath）
-  profile: /app/uploadPath
+  # 文件路径 示例（ Windows配置 C:/app/data，Linux配置 /app/data）
+  profile: C:/app/data
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
@@ -56,9 +54,9 @@ spring:
   servlet:
     multipart:
       # 单个文件大小
-      max-file-size: 10MB
+      max-file-size: 888MB
       # 设置总上传的文件大小
-      max-request-size: 20MB
+      max-request-size: 1024MB
   # 数据源配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -177,3 +175,22 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+aspect:
+  logger:
+    spring-application-name: true
+    request-url: true
+    request-uri: false
+    class-method: false
+    request-method: true
+    request-param: true
+    request-desc: false
+    request-ip: false
+    request-user-agent: false
+    content-type: false
+    session: false
+    cookie: false
+  do-before: true
+  do-after: true
+  do-returning: true
+  do-throwing: true

@@ -1,4 +1,6 @@
 # 生产环境配置
+backend:
+  profile: /app/data
 
 # Spring配置
 spring:
@@ -20,6 +22,9 @@ spring:
   redis:
     # 地址
     host: redis
+
+token:
+  expireTime: 30
 
 # Swagger配置
 swagger:

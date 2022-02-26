@@ -20,7 +20,7 @@
         <druid.version>1.2.8</druid.version>
         <lombok.version>1.18.22</lombok.version>
         <bitwalker.version>1.21</bitwalker.version>
-        <swagger.version>3.0.0</swagger.version>
+        <knife4j.version>3.0.3</knife4j.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
         <pagehelper.boot.version>1.4.0</pagehelper.boot.version>
@@ -103,18 +103,12 @@
                 <version>${jna.version}</version>
             </dependency>
 
-            <!-- Swagger3依赖 -->
-            <!--            <dependency>-->
-            <!--                <groupId>io.springfox</groupId>-->
-            <!--                <artifactId>springfox-boot-starter</artifactId>-->
-            <!--                <version>${swagger.version}</version>-->
-            <!--                <exclusions>-->
-            <!--                    <exclusion>-->
-            <!--                        <groupId>io.swagger</groupId>-->
-            <!--                        <artifactId>swagger-models</artifactId>-->
-            <!--                    </exclusion>-->
-            <!--                </exclusions>-->
-            <!--            </dependency>-->
+            <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-spring-boot-starter -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
 
             <!-- io常用工具类 -->
             <dependency>
@@ -207,6 +201,13 @@
                 <version>${backend.version}</version>
             </dependency>
 
+            <!-- 业务模块-->
+            <dependency>
+                <groupId>cn.henry</groupId>
+                <artifactId>backend-business</artifactId>
+                <version>${backend.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -217,6 +218,7 @@
         <module>backend-quartz</module>
         <module>backend-generator</module>
         <module>backend-common</module>
+        <module>backend-business</module>
     </modules>
     <packaging>pom</packaging>
 

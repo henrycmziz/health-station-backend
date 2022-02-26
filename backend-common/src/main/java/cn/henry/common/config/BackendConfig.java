@@ -32,11 +32,6 @@ public class BackendConfig {
     private String copyrightYear;
 
     /**
-     * 实例演示开关
-     */
-    private boolean demoEnabled;
-
-    /**
      * 上传路径
      */
     private static String profile;
@@ -83,14 +78,6 @@ public class BackendConfig {
         this.copyrightYear = copyrightYear;
     }
 
-    public boolean isDemoEnabled() {
-        return demoEnabled;
-    }
-
-    public void setDemoEnabled(boolean demoEnabled) {
-        this.demoEnabled = demoEnabled;
-    }
-
     public static String getProfile() {
         return profile;
     }
@@ -127,6 +114,13 @@ public class BackendConfig {
      */
     public static String getAvatarPath() {
         return getProfile() + "/avatar";
+    }
+
+    /**
+     * 获取视频上传路径
+     */
+    public static String getVideoPath() {
+        return getProfile() + "/video";
     }
 
     /**
