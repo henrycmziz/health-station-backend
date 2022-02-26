@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./logs:/app/logs
+      - ./app:/app/
       - /etc/timezone:/etc/timezone
     external_links:
       - hs-mysql:db #可以用db这个域名访问mysql服务
