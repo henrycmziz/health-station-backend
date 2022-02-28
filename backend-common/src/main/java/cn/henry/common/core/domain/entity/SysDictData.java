@@ -1,17 +1,18 @@
 package cn.henry.common.core.domain.entity;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import cn.henry.common.annotation.Excel;
 import cn.henry.common.annotation.Excel.ColumnType;
 import cn.henry.common.constant.UserConstants;
 import cn.henry.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 字典数据表 sys_dict_data
- * 
+ *
  * @author ruoyi
  */
 public class SysDictData extends BaseEntity
@@ -153,10 +154,10 @@ public class SysDictData extends BaseEntity
     {
         this.status = status;
     }
-    
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this,ToStringStyle.DEFAULT_STYLE)
             .append("dictCode", getDictCode())
             .append("dictSort", getDictSort())
             .append("dictLabel", getDictLabel())

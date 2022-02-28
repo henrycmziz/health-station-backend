@@ -1,17 +1,18 @@
 package cn.henry.common.core.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import cn.henry.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import cn.henry.common.core.domain.BaseEntity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门表 sys_dept
- * 
+ *
  * @author ruoyi
  */
 public class SysDept extends BaseEntity
@@ -50,7 +51,7 @@ public class SysDept extends BaseEntity
 
     /** 父部门名称 */
     private String parentName;
-    
+
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
 
@@ -182,7 +183,7 @@ public class SysDept extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this,ToStringStyle.DEFAULT_STYLE)
             .append("deptId", getDeptId())
             .append("parentId", getParentId())
             .append("ancestors", getAncestors())

@@ -23,9 +23,10 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- mapstruct -->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
         </dependency>
 
         <!-- 通用工具-->

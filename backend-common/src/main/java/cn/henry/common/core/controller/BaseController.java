@@ -1,28 +1,32 @@
 package cn.henry.common.core.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import cn.henry.common.constant.HttpStatus;
 import cn.henry.common.core.domain.AjaxResult;
+import cn.henry.common.core.domain.Response;
+import cn.henry.common.core.domain.ResponseEnum;
 import cn.henry.common.core.domain.model.LoginUser;
 import cn.henry.common.core.page.PageDomain;
+import cn.henry.common.core.page.ResponsePageInfo;
 import cn.henry.common.core.page.TableDataInfo;
 import cn.henry.common.core.page.TableSupport;
 import cn.henry.common.utils.DateUtils;
 import cn.henry.common.utils.SecurityUtils;
 import cn.henry.common.utils.StringUtils;
 import cn.henry.common.utils.sql.SqlUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
 
 /**
  * web层通用数据处理
- * 
+ *
  * @author ruoyi
  */
 public class BaseController
@@ -90,6 +94,32 @@ public class BaseController
     }
 
     /**
+     * 响应请求分页数据 可以swagger识别
+     * @param list 加入泛型任何list
+     * @author JuniorRay
+     */
+    protected <T> ResponsePageInfo<T> toResponsePageInfo(List<T> list)
+    {
+        ResponsePageInfo<T> responsePageInfo = new ResponsePageInfo<>();
+        responsePageInfo.setCode(ResponseEnum.SUCCESS.getCode());
+        responsePageInfo.setMsg("查询成功");
+        responsePageInfo.setRows(list);
+        responsePageInfo.setTotal(new PageInfo(list).getTotal());
+        return responsePageInfo;
+    }
+    /**
+     * 响应返回结果  可以swagger识别
+     *
+     * @param rows 影响行数
+     * @author JuniorRay
+     * @return 操作结果
+     */
+    protected Response<Integer> toResponse(int rows)
+    {
+        return rows > 0 ? Response.success(rows) : Response.error();
+    }
+
+    /**
      * 返回成功
      */
     public AjaxResult success()
@@ -123,7 +153,7 @@ public class BaseController
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param rows 影响行数
      * @return 操作结果
      */
@@ -134,7 +164,7 @@ public class BaseController
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param result 结果
      * @return 操作结果
      */

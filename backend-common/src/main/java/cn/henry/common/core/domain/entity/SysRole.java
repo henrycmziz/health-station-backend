@@ -1,16 +1,17 @@
 package cn.henry.common.core.domain.entity;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import cn.henry.common.annotation.Excel;
 import cn.henry.common.annotation.Excel.ColumnType;
 import cn.henry.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 角色表 sys_role
- * 
+ *
  * @author ruoyi
  */
 public class SysRole extends BaseEntity
@@ -203,10 +204,10 @@ public class SysRole extends BaseEntity
     {
         this.deptIds = deptIds;
     }
-    
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this,ToStringStyle.DEFAULT_STYLE)
             .append("roleId", getRoleId())
             .append("roleName", getRoleName())
             .append("roleKey", getRoleKey())

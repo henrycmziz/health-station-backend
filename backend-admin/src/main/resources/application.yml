@@ -45,7 +45,7 @@ spring:
   devtools:
     restart:
       # 热部署开关
-      enabled: true
+      enabled: false
   # 资源信息
   messages:
     # 国际化资源文件路径
@@ -175,22 +175,3 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-
-aspect:
-  logger:
-    spring-application-name: true
-    request-url: true
-    request-uri: false
-    class-method: false
-    request-method: true
-    request-param: true
-    request-desc: false
-    request-ip: false
-    request-user-agent: false
-    content-type: false
-    session: false
-    cookie: false
-  do-before: true
-  do-after: true
-  do-returning: true
-  do-throwing: true

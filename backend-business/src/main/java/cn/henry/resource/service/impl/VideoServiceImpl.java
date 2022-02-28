@@ -1,9 +1,13 @@
 package cn.henry.resource.service.impl;
 
-import cn.henry.common.utils.DateUtils;
 import cn.henry.common.utils.file.FileUtils;
 import cn.henry.resource.domain.Video;
+import cn.henry.resource.domain.dto.VideoDto;
+import cn.henry.resource.domain.dto.VideoEditDto;
+import cn.henry.resource.domain.vo.VideoListVo;
+import cn.henry.resource.domain.vo.VideoVo;
 import cn.henry.resource.mapper.VideoMapper;
+import cn.henry.resource.mapper.mapstruct.VideoConvertMapper;
 import cn.henry.resource.service.IVideoService;
 import org.springframework.stereotype.Service;
 
@@ -28,19 +32,19 @@ public class VideoServiceImpl implements IVideoService {
      * @return 视频信息
      */
     @Override
-    public Video selectVideoLibById(Long id) {
-        return videoMapper.selectVideoLibById(id);
+    public VideoVo selectVideoById(Long id) {
+        return VideoConvertMapper.INSTANCE.videoToVideoVo(videoMapper.selectVideoById(id));
     }
 
     /**
      * 查询视频信息列表
      *
-     * @param video 视频信息
+     * @param videoDTO 视频信息
      * @return 视频信息
      */
     @Override
-    public List<Video> selectVideoLibList(Video video) {
-        return videoMapper.selectVideoLibList(video);
+    public List<VideoListVo> selectVideoList(VideoDto videoDTO) {
+        return VideoConvertMapper.INSTANCE.videoToVideoListVo(videoMapper.selectVideoList(videoDTO));
     }
 
     /**
@@ -50,32 +54,19 @@ public class VideoServiceImpl implements IVideoService {
      * @return 结果
      */
     @Override
-    public boolean insertVideoLib(Video video) {
-        video.setCreateTime(DateUtils.getNowDate());
-        return videoMapper.insertVideoLib(video) > 0;
+    public boolean insertVideo(Video video) {
+        return videoMapper.insertVideo(video) > 0;
     }
 
     /**
      * 修改视频信息
      *
-     * @param video 视频信息
+     * @param videoEditDto 视频信息
      * @return 结果
      */
     @Override
-    public int updateVideoLib(Video video) {
-        video.setUpdateTime(DateUtils.getNowDate());
-        return videoMapper.updateVideoLib(video);
-    }
-
-    /**
-     * 批量删除视频信息
-     *
-     * @param ids 需要删除的视频信息主键
-     * @return 结果
-     */
-    @Override
-    public int deleteVideoLibByIds(Long[] ids) {
-        return videoMapper.deleteVideoLibByIds(ids);
+    public int updateVideo(VideoEditDto videoEditDto) {
+        return videoMapper.updateVideo(videoEditDto);
     }
 
     /**
@@ -85,10 +76,10 @@ public class VideoServiceImpl implements IVideoService {
      * @return 结果
      */
     @Override
-    public int deleteVideoLibById(Long id) {
-        Video video = selectVideoLibById(id);
+    public int deleteVideoById(Long id) {
+        VideoVo video = selectVideoById(id);
         FileUtils.deleteFile(video.getVideoUrl());
         FileUtils.deleteFile(video.getVideoThumbnailUrl());
-        return videoMapper.deleteVideoLibById(id);
+        return videoMapper.deleteVideoById(id);
     }
 }
