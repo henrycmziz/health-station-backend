@@ -50,9 +50,9 @@ public class Video extends BaseEntity {
     private String videoDuration;
 
     /**
-     * 视频状态(默认0:正常，1:停用)
+     * 视频状态(默认1:正常，0:停用)
      */
-    private String status;
+    private Byte status;
 
     public Video(String videoUrl, String extendType, String fileName, String videoThumbnailUrl, String videoDuration, String createBy) {
         this.videoUrl = videoUrl;

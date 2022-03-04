@@ -31,14 +31,14 @@
                create_time,
                update_by,
                update_time
-        from hs_video_lib
+        from biz_video_lib
     </sql>
 
     <select id="selectVideoList" parameterType="videoDTO" resultMap="VideoLibResult">
         <include refid="selectVideoLibVo" />
         <where>
-            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
-            <if test="status != null and status != ''">and status = #{status}</if>
+            <if test="fileName != null and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="status != null">and status = #{status}</if>
         </where>
     </select>
 
@@ -48,7 +48,7 @@
     </select>
 
     <insert id="insertVideo" parameterType="Video" useGeneratedKeys="true" keyProperty="id">
-        insert into hs_video_lib
+        insert into biz_video_lib
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="videoUrl != null and videoUrl != ''">video_url,</if>
             <if test="extendType != null and extendType != ''">extend_type,</if>
@@ -56,7 +56,7 @@
             <if test="videoThumbnailUrl != null">video_thumbnail_url,</if>
             <if test="videoDuration != null">video_duration,</if>
             <if test="remark != null">remark,</if>
-            <if test="status != null and status != ''">status,</if>
+            <if test="status != null">status,</if>
             <if test="createBy != null">create_by,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -66,16 +66,16 @@
             <if test="videoThumbnailUrl != null">#{videoThumbnailUrl},</if>
             <if test="videoDuration != null">#{videoDuration},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="status != null and status != ''">#{status},</if>
+            <if test="status != null">#{status},</if>
             <if test="createBy != null">#{createBy},</if>
         </trim>
     </insert>
 
     <update id="updateVideo" parameterType="videoEditDto">
-        update hs_video_lib
+        update biz_video_lib
         <trim prefix="SET" suffixOverrides=",">
             <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
-            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
         where id = #{id}
@@ -83,7 +83,7 @@
 
     <delete id="deleteVideoById" parameterType="Long">
         delete
-        from hs_video_lib
+        from biz_video_lib
         where id = #{id}
     </delete>
 </mapper>

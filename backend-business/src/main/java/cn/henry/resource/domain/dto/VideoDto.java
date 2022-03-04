@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2022-02-28 10:19
  **/
 @Data
-@ApiModel(value = "VideoDTO", description ="视频DTO")
+@ApiModel(value = "VideoDTO", description = "视频DTO")
 public class VideoDto {
     /**
      * 文件名称
@@ -19,8 +19,8 @@ public class VideoDto {
     @ApiModelProperty(value = "文件名称")
     private String fileName;
     /**
-     * 视频状态(默认0:正常，1:停用)
+     * 视频状态(默认1:正常, 0:停用)
      */
-    @ApiModelProperty(value = "视频状态(默认0:正常，1:停用)")
+    @ApiModelProperty(value = "视频状态(默认1:正常, 0:停用)")
     private String status;
 }

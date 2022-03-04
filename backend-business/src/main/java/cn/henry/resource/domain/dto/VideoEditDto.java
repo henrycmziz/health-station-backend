@@ -26,10 +26,10 @@ public class VideoEditDto {
     private String fileName;
 
     /**
-     * 视频状态(默认0:正常，1:停用)
+     * 视频状态(默认1:正常, 0:停用)
      */
-    @ApiModelProperty(value = "视频状态(默认0:正常，1:停用)")
-    private String status;
+    @ApiModelProperty(value = "视频状态(默认1:正常, 0:停用)")
+    private Byte status;
 
     /**
      * 视频说明
