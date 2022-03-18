@@ -124,6 +124,13 @@ public class BackendConfig {
     }
 
     /**
+     * 获取文章内图片等文件上传路径
+     */
+    public static String getArticleResourcePath() {
+        return getProfile() + "/articleResource";
+    }
+
+    /**
      * 获取下载路径
      */
     public static String getDownloadPath() {

@@ -1,17 +1,10 @@
 package cn.henry.resource.controller;
 
 import cn.henry.common.annotation.Log;
-import cn.henry.common.config.BackendConfig;
 import cn.henry.common.core.controller.BaseController;
-import cn.henry.common.core.domain.FileInfo;
 import cn.henry.common.core.domain.Response;
-import cn.henry.common.core.domain.ResponseEnum;
 import cn.henry.common.core.page.ResponsePageInfo;
 import cn.henry.common.enums.BusinessType;
-import cn.henry.common.utils.file.FileUploadUtils;
-import cn.henry.common.utils.file.FileUtils;
-import cn.henry.common.utils.file.VideoJave2Utils;
-import cn.henry.resource.domain.Video;
 import cn.henry.resource.domain.dto.VideoDto;
 import cn.henry.resource.domain.dto.VideoEditDto;
 import cn.henry.resource.domain.vo.VideoListVo;
@@ -46,26 +39,14 @@ public class VideoLibController extends BaseController {
     /**
      * 视频上传
      *
-     * @return
+     * @return Response
      */
     @ApiOperation(value = "视频上传")
     @PreAuthorize("@ss.hasPermi('resource:video:add')")
     @Log(title = "视频上传", businessType = BusinessType.INSERT)
     @PostMapping("/upload")
-    public Response upload(MultipartFile file) throws IOException, EncoderException {
-        if (!file.isEmpty() && VideoJave2Utils.checkIsVideo(file.getOriginalFilename())) {
-            // 视频上传
-            FileInfo fileInfo = FileUploadUtils.upload(BackendConfig.getVideoPath(), file);
-            // 生成缩略图
-            String videoThumbnailUrl = VideoJave2Utils.generateVideoScreenImage(FileUtils.pathFileNameToRealPath(fileInfo.getPathFileName()));
-            // 获取时长
-            String duration = VideoJave2Utils.getVideoDuration(FileUtils.pathFileNameToRealPath(fileInfo.getPathFileName()));
-            Video video = new Video(fileInfo.getPathFileName(), fileInfo.getExtendType(), fileInfo.getShowFileName(), FileUtils.realPathToPathFileName(videoThumbnailUrl), duration, getUsername());
-            if (videoService.insertVideo(video)) {
-                return Response.success();
-            }
-        }
-        return Response.error(ResponseEnum.ABNORMAL_VIDEO_UPLOAD);
+    public Response upload(MultipartFile file) throws EncoderException, IOException {
+        return videoService.handleVideoUpload(file);
     }
 
     /**

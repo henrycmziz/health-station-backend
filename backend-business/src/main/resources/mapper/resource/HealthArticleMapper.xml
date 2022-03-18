@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.resource.mapper.HealthArticleMapper">
+
+    <resultMap type="HealthArticle" id="HealthArticleResult">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="articleFrom" column="article_from" />
+        <result property="article" column="article" />
+        <result property="articleUrl" column="article_url" />
+        <result property="thumbnail" column="thumbnail" />
+        <result property="status" column="status" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectHealthArticleVo">
+        select id,
+               title,
+               article_from,
+               article,
+               article_url,
+               thumbnail,
+               status,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from biz_health_article
+    </sql>
+
+    <select id="selectHealthArticleList" parameterType="HealthArticle" resultMap="HealthArticleResult">
+        <include refid="selectHealthArticleVo" />
+        <where>
+            <if test="title != null  and title != ''">and title like concat('%', #{title}, '%')</if>
+            <if test="articleFrom != null ">and article_from = #{articleFrom}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''">
+                and create_time between #{params.beginCreateTime} and #{params.endCreateTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectHealthArticleById" parameterType="Long" resultMap="HealthArticleResult">
+        <include refid="selectHealthArticleVo" />
+        where id = #{id}
+    </select>
+
+    <insert id="insertHealthArticle" parameterType="HealthArticle">
+        insert into biz_health_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="articleFrom != null">article_from,</if>
+            <if test="article != null">article,</if>
+            <if test="articleUrl != null">article_url,</if>
+            <if test="thumbnail != null">thumbnail,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="articleFrom != null">#{articleFrom},</if>
+            <if test="article != null">#{article},</if>
+            <if test="articleUrl != null">#{articleUrl},</if>
+            <if test="thumbnail != null">#{thumbnail},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHealthArticle" parameterType="HealthArticle">
+        update biz_health_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="articleFrom != null">article_from = #{articleFrom},</if>
+            <if test="article != null">article = #{article},</if>
+            <if test="articleUrl != null">article_url = #{articleUrl},</if>
+            <if test="thumbnail != null">thumbnail = #{thumbnail},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHealthArticleById" parameterType="Long">
+        delete
+        from biz_health_article
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteHealthArticleByIds" parameterType="String">
+        delete from biz_health_article where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

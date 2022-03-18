@@ -17,6 +17,6 @@ public class BackendApplication {
     public static void main(String[] args) {
         System.setProperty("druid.mysql.usePingMethod", "false");
         SpringApplication.run(BackendApplication.class, args);
-        log.info("😎😎😎😎😎😎 Health Station Backend service started... :)");
+        log.info("\n😎😎😎😎😎😎 Health Station Backend service started... :)");
     }
 }

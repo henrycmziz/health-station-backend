@@ -16,13 +16,6 @@
 
     <dependencies>
 
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- mapstruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -33,6 +26,11 @@
         <dependency>
             <groupId>cn.henry</groupId>
             <artifactId>backend-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.henry</groupId>
+            <artifactId>backend-framework</artifactId>
         </dependency>
 
     </dependencies>

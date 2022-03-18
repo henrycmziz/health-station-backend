@@ -1,11 +1,15 @@
 package cn.henry.resource.service;
 
+import cn.henry.common.core.domain.Response;
 import cn.henry.resource.domain.Video;
 import cn.henry.resource.domain.dto.VideoDto;
 import cn.henry.resource.domain.dto.VideoEditDto;
 import cn.henry.resource.domain.vo.VideoListVo;
 import cn.henry.resource.domain.vo.VideoVo;
+import org.springframework.web.multipart.MultipartFile;
+import ws.schild.jave.EncoderException;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,8 +18,17 @@ import java.util.List;
  * @author henry
  * @date 2022-02-20
  */
-public interface IVideoService
-{
+public interface IVideoService {
+    /**
+     * 视频上传处理
+     *
+     * @param file 文件
+     * @return Response
+     * @throws EncoderException 编码器异常
+     * @throws IOException      IO 异常
+     */
+    Response handleVideoUpload(MultipartFile file) throws EncoderException, IOException;
+
     /**
      * 查询视频信息
      *

@@ -1,9 +1,7 @@
 package cn.henry.resource.domain;
 
 import cn.henry.common.core.domain.BaseEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,9 +11,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author henry
  * @date 2022-02-20
  */
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Video extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -53,15 +53,6 @@ public class Video extends BaseEntity {
      * 视频状态(默认1:正常，0:停用)
      */
     private Byte status;
-
-    public Video(String videoUrl, String extendType, String fileName, String videoThumbnailUrl, String videoDuration, String createBy) {
-        this.videoUrl = videoUrl;
-        this.extendType = extendType;
-        this.fileName = fileName;
-        this.videoThumbnailUrl = videoThumbnailUrl;
-        this.videoDuration = videoDuration;
-        setCreateBy(createBy);
-    }
 
     @Override
     public String toString() {
