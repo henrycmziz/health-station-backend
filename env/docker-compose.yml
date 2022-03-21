@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  hs-mysql:
+    image: mysql:8.0.21
+    container_name: hs-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 666888 #设置root帐号密码
+      MYSQL_DATABASE: health_station
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./conf/mysql.cnf:/etc/mysql/conf.d/mysql.cnf #配置文件挂载
+      - ./init:/docker-entrypoint-initdb.d #初始化文件挂载
+      - ../dockerData/mysql/data:/var/lib/mysql #数据文件挂载
+    networks:
+      - hs_net
+
+  hs-redis:
+    image: redis:6.2.6
+    container_name: hs-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:rw
+      - ../dockerData/redis/data:/data #数据文件挂载
+    ports:
+      - "6380:6379"
+    networks:
+      - hs_net
+
+networks:
+    hs_net:
+      external: true

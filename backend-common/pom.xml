@@ -143,12 +143,8 @@
             <artifactId>jave-core</artifactId>
             <version>3.2.0</version>
         </dependency>
-        <!--windows 引用jar,主要集成 ffmpeg-amd64-3.2.0.exe  -->
-<!--        <dependency>-->
-<!--            <groupId>ws.schild</groupId>-->
-<!--            <artifactId>jave-nativebin-win64</artifactId>-->
-<!--            <version>3.2.0</version>-->
-<!--        </dependency>-->
+
+
         <!--linux 引用jar,主要集成 ffmpeg-amd64-3.2.0 linux下可执行文件  -->
         <dependency>
             <groupId>ws.schild</groupId>
