@@ -4,6 +4,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.henry.common.core.domain.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,6 @@ import ${packageName}.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
 import cn.henry.common.utils.poi.ExcelUtil;
 #if($table.crud || $table.sub)
-import cn.henry.common.core.page.TableDataInfo;
 #elseif($table.tree)
 #end
 
@@ -76,7 +77,7 @@ public class ${ClassName}Controller extends BaseController {
     @ApiOperation(value = "详细信息")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:query')")
     @GetMapping(value = "/{${pkColumn.javaField}}")
-    public Response<${className}> getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
+    public Response<${ClassName}> getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
         return Response.success(${className}Service.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField}));
     }
 

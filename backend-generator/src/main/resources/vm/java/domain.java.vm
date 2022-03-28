@@ -6,6 +6,7 @@ import ${import};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import cn.henry.common.annotation.Excel;
@@ -26,6 +27,7 @@ import cn.henry.common.core.domain.TreeEntity;
 #elseif($table.tree)
     #set($Entity="TreeEntity")
 #end
+@EqualsAndHashCode(callSuper = false)
 @Data
 @ApiModel(value = "${ClassName}", description = "${functionName}")
 public class ${ClassName} extends ${Entity} {
