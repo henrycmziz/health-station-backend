@@ -2,8 +2,7 @@ package cn.henry.common.core.page;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.List;
  * @author JuniorRay
  * @date 2020-11-12
  */
-@Getter
-@Setter
+@Data
 @ApiModel(description = "表格分页数据对象ResponsePageInfo")
 public class ResponsePageInfo<T> implements Serializable {
     private static final long serialVersionUID = 1L;

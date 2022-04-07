@@ -215,6 +215,13 @@
                 <version>${backend.version}</version>
             </dependency>
 
+            <!-- 问卷模块-->
+            <dependency>
+                <groupId>cn.henry</groupId>
+                <artifactId>backend-questionnaire</artifactId>
+                <version>${backend.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -226,6 +233,7 @@
         <module>backend-generator</module>
         <module>backend-common</module>
         <module>backend-business</module>
+        <module>backend-questionnaire</module>
     </modules>
     <packaging>pom</packaging>
 

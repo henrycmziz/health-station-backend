@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.questionnaire.mapper.AnswerMapper">
+
+    <resultMap type="Answer" id="AnswerResult">
+        <result property="answerId" column="answer_id" />
+        <result property="questionId" column="question_id" />
+        <result property="questionnaireId" column="questionnaire_id" />
+        <result property="writeValue" column="write_value" />
+        <result property="fillTime" column="fill_time" />
+        <result property="userId" column="user_id" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectAnswerVo">
+        select *
+        from biz_wj_answer
+    </sql>
+
+    <select id="selectAnswerList" parameterType="Answer" resultMap="AnswerResult">
+        <include refid="selectAnswerVo" />
+        <where>
+            <if test="questionId != null ">and question_id = #{questionId}</if>
+            <if test="questionnaireId != null ">and questionnaire_id = #{questionnaireId}</if>
+            <if test="writeValue != null  and writeValue != ''">and write_value = #{writeValue}</if>
+            <if test="fillTime != null ">and fill_time = #{fillTime}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectAnswerByAnswerId" parameterType="Long" resultMap="AnswerResult">
+        <include refid="selectAnswerVo" />
+        where answer_id = #{answerId}
+    </select>
+
+    <insert id="insertAnswer" parameterType="Answer" useGeneratedKeys="true" keyProperty="answerId">
+        insert into biz_wj_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="questionnaireId != null">questionnaire_id,</if>
+            <if test="writeValue != null">write_value,</if>
+            <if test="fillTime != null">fill_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="questionnaireId != null">#{questionnaireId},</if>
+            <if test="writeValue != null">#{writeValue},</if>
+            <if test="fillTime != null">#{fillTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAnswer" parameterType="Answer">
+        update biz_wj_answer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="questionId != null">question_id = #{questionId},</if>
+            <if test="questionnaireId != null ">questionnaire_id = #{questionnaireId}</if>
+            <if test="writeValue != null">write_value = #{writeValue},</if>
+            <if test="fillTime != null">fill_time = #{fillTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where answer_id = #{answerId}
+    </update>
+
+    <delete id="deleteAnswerByAnswerId" parameterType="Long">
+        delete
+        from biz_wj_answer
+        where answer_id = #{answerId}
+    </delete>
+
+    <delete id="deleteAnswerByAnswerIds" parameterType="String">
+        delete from biz_wj_answer where answer_id in
+        <foreach item="answerId" collection="array" open="(" separator="," close=")">
+            #{answerId}
+        </foreach>
+    </delete>
+</mapper>

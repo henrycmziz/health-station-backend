@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.questionnaire.mapper.QuestionMapper">
+
+    <resultMap type="Question" id="QuestionResult">
+        <result property="questionId" column="question_id" />
+        <result property="questionnaireId" column="questionnaire_id" />
+        <result property="questionIndex" column="question_index" />
+        <result property="questionTitle" column="question_title" />
+        <result property="questionDescription" column="question_description" />
+        <result property="questionType" column="question_type" />
+        <result property="questionNullable" column="question_nullable" />
+        <result property="details" column="details" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectQuestionVo">
+        select question_id,
+               questionnaire_id,
+               question_index,
+               question_title,
+               question_description,
+               question_type,
+               question_nullable,
+               details,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from biz_wj_question
+    </sql>
+
+    <select id="selectQuestionList" parameterType="Question" resultMap="QuestionResult">
+        <include refid="selectQuestionVo" />
+        <where>
+            <if test="questionnaireId != null ">and questionnaire_id = #{questionnaireId}</if>
+            <if test="questionTitle != null  and questionTitle != ''">and question_title = #{questionTitle}</if>
+            <if test="questionDescription != null  and questionDescription != ''">and question_description =
+                #{questionDescription}
+            </if>
+            <if test="questionType != null  and questionType != ''">and question_type = #{questionType}</if>
+            <if test="questionNullable != null ">and question_nullable = #{questionNullable}</if>
+            <if test="details != null  and details != ''">and details = #{details}</if>
+        </where>
+    </select>
+
+    <select id="selectQuestionByQuestionId" parameterType="Long" resultMap="QuestionResult">
+        <include refid="selectQuestionVo" />
+        where question_id = #{questionId}
+    </select>
+
+    <insert id="saveQuestion" parameterType="Question">
+        insert into biz_wj_question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="questionnaireId != null">questionnaire_id,</if>
+            <if test="questionIndex != null">question_index,</if>
+            <if test="questionTitle != null and questionTitle != ''">question_title,</if>
+            <if test="questionDescription != null">question_description,</if>
+            <if test="questionType != null">question_type,</if>
+            <if test="questionNullable != null">question_nullable,</if>
+            <if test="details != null">details,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="questionnaireId != null">#{questionnaireId},</if>
+            <if test="questionIndex != null">#{questionIndex},</if>
+            <if test="questionTitle != null and questionTitle != ''">#{questionTitle},</if>
+            <if test="questionDescription != null">#{questionDescription},</if>
+            <if test="questionType != null">#{questionType},</if>
+            <if test="questionNullable != null">#{questionNullable},</if>
+            <if test="details != null">#{details},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="questionId != null">question_id=VALUES(question_id),</if>
+            <if test="questionnaireId != null">questionnaire_id=VALUES(questionnaire_id),</if>
+            <if test="questionIndex != null">question_index=VALUES(question_index),</if>
+            <if test="questionTitle != null and questionTitle != ''">question_title=VALUES(question_title),</if>
+            <if test="questionDescription != null">question_description=VALUES(question_description),</if>
+            <if test="questionType != null">question_type=VALUES(question_type),</if>
+            <if test="questionNullable != null">question_nullable=VALUES(question_nullable),</if>
+            <if test="details != null">details=VALUES(details),</if>
+            <if test="createBy != null">create_by=VALUES(create_by),</if>
+            <if test="updateBy != null">update_by=VALUES(update_by),</if>
+        </trim>
+    </insert>
+
+    <update id="updateQuestion" parameterType="Question">
+        update biz_wj_question
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="questionnaireId != null">questionnaire_id = #{questionnaireId},</if>
+            <if test="questionIndex != null">question_index = #{questionIndex},</if>
+            <if test="questionTitle != null and questionTitle != ''">question_title = #{questionTitle},</if>
+            <if test="questionDescription != null">question_description = #{questionDescription},</if>
+            <if test="questionType != null">question_type = #{questionType},</if>
+            <if test="questionNullable != null">question_nullable = #{questionNullable},</if>
+            <if test="details != null">details = #{details},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteQuestionByQuestionId" parameterType="Long">
+        delete
+        from biz_wj_question
+        where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteQuestionByQuestionIds" parameterType="String">
+        delete from biz_wj_question where question_id in
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteQuestionByQuestionnaireId" parameterType="Long">
+        delete
+        from biz_wj_question
+        where questionnaire_id = #{questionnaireId}
+    </delete>
+</mapper>

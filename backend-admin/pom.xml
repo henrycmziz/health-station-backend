@@ -60,6 +60,12 @@
             <artifactId>backend-generator</artifactId>
         </dependency>
 
+        <!-- 问卷模块-->
+        <dependency>
+            <groupId>cn.henry</groupId>
+            <artifactId>backend-questionnaire</artifactId>
+        </dependency>
+
         <!-- 业务-->
         <dependency>
             <groupId>cn.henry</groupId>
