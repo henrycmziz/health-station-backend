@@ -63,7 +63,7 @@ public class AnswerDto {
      * 数字答案
      */
     @ApiModelProperty(value = "数字答案")
-    private Long answerNumber;
+    private Double answerNumber;
 
     /**
      * 评分答案

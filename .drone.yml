@@ -51,8 +51,8 @@ steps:
       tips_title: hs-backend-ci-info
       success_color: 09c270
       failure_color: ff3c3c
-      tpl_build_status_success: "======== √  SUCCESS ========"
-      tpl_build_status_failure: "======== ×  FAILURE ========"
+      tpl_build_status_success: "=== √  SUCCESS ==="
+      tpl_build_status_failure: "=== ×  FAILURE ==="
       debug: true
       tpl: |
         ## <font color=[TPL_STATUS_COLOR]> [TPL_BUILD_STATUS] </font>
