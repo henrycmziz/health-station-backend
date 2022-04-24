@@ -3,6 +3,7 @@ package cn.henry.framework.web.service;
 import cn.henry.common.constant.Constants;
 import cn.henry.common.core.domain.model.LoginUser;
 import cn.henry.common.core.redis.RedisCache;
+import cn.henry.common.enums.UserType;
 import cn.henry.common.utils.ServletUtils;
 import cn.henry.common.utils.StringUtils;
 import cn.henry.common.utils.ip.AddressUtils;
@@ -116,10 +117,20 @@ public class TokenService {
      */
     public void refreshToken(LoginUser loginUser) {
         loginUser.setLoginTime(System.currentTimeMillis());
-        loginUser.setExpireTime(loginUser.getLoginTime() + TokenConfig.getExpireTime() * MILLIS_MINUTE);
+        if (loginUser.getUser().getUserType().equals(UserType.PATIENT.getCode())) {
+            // 患者类型用户
+            loginUser.setExpireTime(loginUser.getLoginTime() + TokenConfig.getAppExpireTime() * MILLIS_MINUTE);
+        } else {
+            loginUser.setExpireTime(loginUser.getLoginTime() + TokenConfig.getExpireTime() * MILLIS_MINUTE);
+        }
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
-        redisCache.setCacheObject(userKey, loginUser, TokenConfig.getExpireTime(), TimeUnit.MINUTES);
+        if (loginUser.getUser().getUserType().equals(UserType.PATIENT.getCode())) {
+            // 患者类型用户
+            redisCache.setCacheObject(userKey, loginUser, TokenConfig.getAppExpireTime(), TimeUnit.MINUTES);
+        } else {
+            redisCache.setCacheObject(userKey, loginUser, TokenConfig.getExpireTime(), TimeUnit.MINUTES);
+        }
     }
 
     /**

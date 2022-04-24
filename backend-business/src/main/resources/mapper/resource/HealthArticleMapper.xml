@@ -10,11 +10,21 @@
         <result property="article" column="article" />
         <result property="articleUrl" column="article_url" />
         <result property="thumbnail" column="thumbnail" />
+        <result property="clicks" column="clicks" />
         <result property="status" column="status" />
         <result property="createBy" column="create_by" />
         <result property="createTime" column="create_time" />
         <result property="updateBy" column="update_by" />
         <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <resultMap type="healthArticleListVo" id="HealthArticleListResult">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="articleFrom" column="article_from" />
+        <result property="articleUrl" column="article_url" />
+        <result property="clicks" column="clicks" />
+        <result property="createTime" column="create_time" />
     </resultMap>
 
     <sql id="selectHealthArticleVo">
@@ -24,6 +34,7 @@
                article,
                article_url,
                thumbnail,
+               clicks,
                status,
                create_by,
                create_time,
@@ -33,6 +44,18 @@
     </sql>
 
     <select id="selectHealthArticleList" parameterType="HealthArticle" resultMap="HealthArticleResult">
+        <include refid="selectHealthArticleVo" />
+        <where>
+            <if test="title != null  and title != ''">and title like concat('%', #{title}, '%')</if>
+            <if test="articleFrom != null ">and article_from = #{articleFrom}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''">
+                and create_time between #{params.beginCreateTime} and #{params.endCreateTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAppHealthArticleList" parameterType="HealthArticle" resultMap="HealthArticleListResult">
         <include refid="selectHealthArticleVo" />
         <where>
             <if test="title != null  and title != ''">and title like concat('%', #{title}, '%')</if>
@@ -82,6 +105,12 @@
             <if test="status != null">status = #{status},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
         </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateClicks" parameterType="Long">
+        update biz_health_article
+        set clicks = clicks + 1
         where id = #{id}
     </update>
 

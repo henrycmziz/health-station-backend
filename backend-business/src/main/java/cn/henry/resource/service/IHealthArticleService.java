@@ -2,6 +2,7 @@ package cn.henry.resource.service;
 
 import cn.henry.resource.domain.HealthArticle;
 import cn.henry.resource.domain.WangEditorResponseBody;
+import cn.henry.resource.domain.vo.HealthArticleListVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -33,9 +34,17 @@ public interface IHealthArticleService {
      * 查询健康小知识列表
      *
      * @param healthArticle 健康小知识
-     * @return 健康小知识集合
+     * @return 健康小知识列表
      */
     List<HealthArticle> selectHealthArticleList(HealthArticle healthArticle);
+
+    /**
+     * app-查询健康小知识列表
+     *
+     * @param healthArticle 健康小知识
+     * @return 健康小知识列表
+     */
+    List<HealthArticleListVo> selectAppHealthArticleList(HealthArticle healthArticle);
 
     /**
      * 新增健康小知识

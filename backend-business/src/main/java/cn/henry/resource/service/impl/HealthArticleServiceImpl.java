@@ -7,6 +7,7 @@ import cn.henry.common.utils.file.FileUploadUtils;
 import cn.henry.framework.config.ServerConfig;
 import cn.henry.resource.domain.HealthArticle;
 import cn.henry.resource.domain.WangEditorResponseBody;
+import cn.henry.resource.domain.vo.HealthArticleListVo;
 import cn.henry.resource.mapper.HealthArticleMapper;
 import cn.henry.resource.service.IHealthArticleService;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class HealthArticleServiceImpl implements IHealthArticleService {
      */
     @Override
     public HealthArticle selectHealthArticleById(Long id) {
+        healthArticleMapper.updateClicks(id);
         return healthArticleMapper.selectHealthArticleById(id);
     }
 
@@ -65,11 +67,22 @@ public class HealthArticleServiceImpl implements IHealthArticleService {
      * 查询健康小知识列表
      *
      * @param healthArticle 健康小知识
-     * @return 健康小知识
+     * @return 健康小知识列表
      */
     @Override
     public List<HealthArticle> selectHealthArticleList(HealthArticle healthArticle) {
         return healthArticleMapper.selectHealthArticleList(healthArticle);
+    }
+
+    /**
+     * app-查询健康小知识列表
+     *
+     * @param healthArticle 健康小知识
+     * @return 健康小知识列表
+     */
+    @Override
+    public List<HealthArticleListVo> selectAppHealthArticleList(HealthArticle healthArticle) {
+        return healthArticleMapper.selectAppHealthArticleList(healthArticle);
     }
 
     /**

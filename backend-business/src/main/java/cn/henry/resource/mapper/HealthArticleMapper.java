@@ -1,6 +1,7 @@
 package cn.henry.resource.mapper;
 
 import cn.henry.resource.domain.HealthArticle;
+import cn.henry.resource.domain.vo.HealthArticleListVo;
 
 import java.util.List;
 
@@ -28,6 +29,14 @@ public interface HealthArticleMapper {
     List<HealthArticle> selectHealthArticleList(HealthArticle healthArticle);
 
     /**
+     * app-查询健康小知识列表
+     *
+     * @param healthArticle 健康小知识
+     * @return 健康小知识集合
+     */
+    List<HealthArticleListVo> selectAppHealthArticleList(HealthArticle healthArticle);
+
+    /**
      * 新增健康小知识
      *
      * @param healthArticle 健康小知识
@@ -42,6 +51,14 @@ public interface HealthArticleMapper {
      * @return 结果
      */
     int updateHealthArticle(HealthArticle healthArticle);
+
+    /**
+     * 点击量+1
+     *
+     * @param id 健康小知识主键
+     * @return 结果
+     */
+    int updateClicks(Long id);
 
     /**
      * 删除健康小知识

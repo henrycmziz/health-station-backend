@@ -1,10 +1,8 @@
 package cn.henry.resource.mapper.mapstruct;
 
-import cn.henry.resource.domain.Video;
-import cn.henry.resource.domain.vo.VideoListVo;
-import cn.henry.resource.domain.vo.VideoVo;
+import cn.henry.resource.domain.HealthArticle;
+import cn.henry.resource.domain.vo.HealthArticleListVo;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -18,20 +16,18 @@ public interface HealthArticleConvertMapper {
     HealthArticleConvertMapper INSTANCE = Mappers.getMapper(HealthArticleConvertMapper.class);
 
     /**
-     * video 转 videoVo
+     * HealthArticle 转 HealthArticleListVo
      *
-     * @param video video
-     * @return VideoVo
+     * @param article article
+     * @return HealthArticleListVo
      */
-    @Mapping(target = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Mapping(target = "updateTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    VideoVo videoToVideoVo(Video video);
+    HealthArticleListVo healthArticleToHealthArticleListVo(HealthArticle article);
 
     /**
-     * List<video> 转 List<videoVo>
+     * List<HealthArticle> 转 List<HealthArticleListVo>
      *
-     * @param videoList videoList
-     * @return List<VideoVo>
+     * @param articleList articleList
+     * @return List<HealthArticleListVo>
      */
-    List<VideoListVo> videoToVideoListVo(List<Video> videoList);
+    List<HealthArticleListVo> healthArticleToHealthArticleListVo(List<HealthArticle> articleList);
 }

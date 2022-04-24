@@ -8,7 +8,6 @@ import cn.henry.questionnaire.domain.vo.QuestionVo;
 import cn.henry.questionnaire.service.IQuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,7 +31,6 @@ public class QuestionController extends BaseController {
      * 查询问卷问题列表
      */
     @ApiOperation(value = "列表")
-    @PreAuthorize("@ss.hasPermi('questionnaire:question:list')")
     @GetMapping
     public Response<List<QuestionVo>> list(@PathVariable("questionnaireId") Long questionnaireId) {
         List<QuestionVo> list = questionService.selectQuestionList(questionnaireId);
@@ -43,7 +41,6 @@ public class QuestionController extends BaseController {
      * 获取问卷问题详细信息
      */
     @ApiOperation(value = "详细信息")
-    @PreAuthorize("@ss.hasPermi('questionnaire:question:query')")
     @GetMapping(value = "/{questionId}")
     public Response<Question> getInfo(@PathVariable("questionId") Long questionId) {
         return Response.success(questionService.selectQuestionByQuestionId(questionId));
@@ -53,7 +50,6 @@ public class QuestionController extends BaseController {
      * 新增/更新 问题
      */
     @ApiOperation(value = "新增/更新")
-    @PreAuthorize("@ss.hasPermi('questionnaire:question:add')")
     @PostMapping
     public Response<Integer> saveQuestion(@RequestBody @Valid QuestionDto dto) {
         return toResponse(questionService.saveQuestion(dto));
@@ -63,7 +59,6 @@ public class QuestionController extends BaseController {
      * 修改问卷问题
      */
     @ApiOperation(value = "修改")
-    @PreAuthorize("@ss.hasPermi('questionnaire:question:edit')")
     @PutMapping("/{questionId}")
     public Response<Integer> edit(@RequestBody Question question) {
         return toResponse(questionService.updateQuestion(question));
@@ -73,7 +68,6 @@ public class QuestionController extends BaseController {
      * 删除问卷问题
      */
     @ApiOperation(value = "删除")
-    @PreAuthorize("@ss.hasPermi('questionnaire:question:remove')")
     @DeleteMapping("/{questionIds}")
     public Response<Integer> remove(@PathVariable Long[] questionIds) {
         return toResponse(questionService.deleteQuestionByQuestionIds(questionIds));

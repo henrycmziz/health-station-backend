@@ -1,6 +1,5 @@
 package cn.henry.questionnaire.service.impl;
 
-import cn.henry.common.utils.SecurityUtils;
 import cn.henry.questionnaire.domain.Answer;
 import cn.henry.questionnaire.domain.Question;
 import cn.henry.questionnaire.domain.dto.AnswerDto;
@@ -127,7 +126,8 @@ public class AnswerServiceImpl implements IAnswerService {
     public int submitAnswer(SubmitAnswerDto dto) {
         Date fillTime = new Date();
         for (AnswerDto answerDto : dto.getAnswerList()) {
-            answerDto.setUserId(SecurityUtils.getUserId());
+            //answerDto.setUserId(SecurityUtils.getUserId());
+            answerDto.setUserId(dto.getUid());
             answerDto.setFillTime(fillTime);
             answerMapper.insertAnswer(AnswerConvertMapper.INSTANCE.answerDtoToAnswer(answerDto));
         }

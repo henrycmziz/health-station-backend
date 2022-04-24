@@ -20,6 +20,12 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "SubmitAnswerDto", description = "提交答案DTO")
 public class SubmitAnswerDto {
     /**
+     * 填写人ID
+     */
+    @ApiModelProperty(value = "填写人ID")
+    private Long uid;
+
+    /**
      * 问卷ID
      */
     @ApiModelProperty(value = "问卷ID")

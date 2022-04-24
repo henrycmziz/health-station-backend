@@ -14,6 +14,8 @@ import cn.henry.common.utils.file.FileUploadUtils;
 import cn.henry.common.utils.file.FileUtils;
 import cn.henry.framework.web.service.TokenService;
 import cn.henry.system.service.ISysUserService;
+import com.alibaba.fastjson.JSONObject;
+import com.cxytiandi.encrypt.springboot.annotation.Decrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,8 +84,11 @@ public class SysProfileController extends BaseController {
      * 重置密码
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @Decrypt
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword) {
+    public AjaxResult updatePwd(@RequestBody JSONObject object) {
+        String oldPassword = object.getString("oldPassword");
+        String newPassword = object.getString("newPassword");
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();

@@ -57,6 +57,12 @@ public class HealthArticle extends BaseEntity {
     private String thumbnail;
 
     /**
+     * 阅读量
+     */
+    @ApiModelProperty(value = "阅读量")
+    private Long clicks;
+
+    /**
      * 状态; 1:启用, 0:停用
      */
     @ApiModelProperty(value = "状态; 1:启用, 0:停用")

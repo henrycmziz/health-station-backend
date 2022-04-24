@@ -170,6 +170,11 @@
             <artifactId>mapstruct</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.cxytiandi</groupId>
+            <artifactId>monkey-api-encrypt-core</artifactId>
+        </dependency>
+
         <!-- jpa-->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->

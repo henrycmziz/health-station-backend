@@ -4,6 +4,7 @@ import cn.henry.common.constant.Constants;
 import cn.henry.common.core.domain.entity.SysUser;
 import cn.henry.common.core.domain.model.LoginUser;
 import cn.henry.common.core.redis.RedisCache;
+import cn.henry.common.enums.UserStatus;
 import cn.henry.common.exception.ServiceException;
 import cn.henry.common.exception.user.CaptchaException;
 import cn.henry.common.exception.user.CaptchaExpireException;
@@ -31,8 +32,7 @@ import javax.annotation.Resource;
  * @author ruoyi
  */
 @Component
-public class SysLoginService
-{
+public class SysLoginService {
     @Autowired
     private TokenService tokenService;
 
@@ -53,41 +53,40 @@ public class SysLoginService
      *
      * @param username 用户名
      * @param password 密码
-     * @param code 验证码
-     * @param uuid 唯一标识
+     * @param code     验证码
+     * @param uuid     唯一标识
      * @return 结果
      */
-    public String login(String username, String password, String code, String uuid)
-    {
+    public String login(String username, String password, String code, String uuid) {
         boolean captchaOnOff = configService.selectCaptchaOnOff();
         // 验证码开关
-        if (captchaOnOff)
-        {
+        if (captchaOnOff) {
             validateCaptcha(username, code, uuid);
         }
+        //SysUser user = userService.selectUserByUserName(username);
+        //if (UserStatus.NOT_ALLOWED.getCode().equals(user.getUserType())) {
+        //    throw new ServiceException("对不起，您的账号：" + username + " 不被允许登录该系统");
+        //}
         // 用户验证
         Authentication authentication;
-        try
-        {
+        try {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        }
-        catch (Exception e)
-        {
-            if (e instanceof BadCredentialsException)
-            {
+        } catch (Exception e) {
+            if (e instanceof BadCredentialsException) {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
-            }
-            else
-            {
+            } else {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
                 throw new ServiceException(e.getMessage());
             }
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        if (UserStatus.NOT_ALLOWED.getCode().equals(loginUser.getUser().getUserType())) {
+            throw new ServiceException("对不起，您的账号：" + username + " 不被允许登录该系统");
+        }
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         recordLoginInfo(loginUser.getUserId());
         // 生成token
         return tokenService.createToken(loginUser);
@@ -97,22 +96,19 @@ public class SysLoginService
      * 校验验证码
      *
      * @param username 用户名
-     * @param code 验证码
-     * @param uuid 唯一标识
+     * @param code     验证码
+     * @param uuid     唯一标识
      * @return 结果
      */
-    public void validateCaptcha(String username, String code, String uuid)
-    {
+    public void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
         String captcha = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
-        if (captcha == null)
-        {
+        if (captcha == null) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(captcha))
-        {
+        if (!code.equalsIgnoreCase(captcha)) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
         }
@@ -123,8 +119,7 @@ public class SysLoginService
      *
      * @param userId 用户ID
      */
-    public void recordLoginInfo(Long userId)
-    {
+    public void recordLoginInfo(Long userId) {
         SysUser sysUser = new SysUser();
         sysUser.setUserId(userId);
         sysUser.setLoginIp(IpUtils.getIpAddr(ServletUtils.getRequest()));

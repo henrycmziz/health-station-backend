@@ -27,6 +27,11 @@ public class TokenConfig {
      */
     private static int expireTime;
 
+    /**
+     * app令牌有效期（两天）
+     */
+    private static int appExpireTime;
+
     public static String getHeader() {
         return header;
     }
@@ -49,5 +54,13 @@ public class TokenConfig {
 
     public void setExpireTime(int expireTime) {
         TokenConfig.expireTime = expireTime;
+    }
+
+    public static int getAppExpireTime() {
+        return appExpireTime;
+    }
+
+    public void setAppExpireTime(int appExpireTime) {
+        TokenConfig.appExpireTime = appExpireTime;
     }
 }

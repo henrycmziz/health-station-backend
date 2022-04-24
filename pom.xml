@@ -173,6 +173,12 @@
                 <version>${org.mapstruct.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.cxytiandi</groupId>
+                <artifactId>monkey-api-encrypt-core</artifactId>
+                <version>1.2.2.RELEASE</version>
+            </dependency>
+
             <!-- 定时任务-->
             <dependency>
                 <groupId>cn.henry</groupId>

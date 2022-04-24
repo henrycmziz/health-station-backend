@@ -9,6 +9,7 @@ import cn.henry.common.utils.SecurityUtils;
 import cn.henry.framework.web.service.SysLoginService;
 import cn.henry.framework.web.service.SysPermissionService;
 import cn.henry.system.service.ISysMenuService;
+import com.cxytiandi.encrypt.springboot.annotation.Decrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class SysLoginController
      * @param loginBody 登录信息
      * @return 结果
      */
+    @Decrypt
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {

@@ -69,8 +69,8 @@ public class QuestionnaireController extends BaseController {
      * 获取问卷详细信息
      */
     @ApiOperation(value = "详细信息")
-    @PreAuthorize("@ss.hasPermi('questionnaire:questionnaire:query')")
-    @GetMapping(value = "/{questionnaireId}")
+    //@PreAuthorize("@ss.hasPermi('questionnaire:questionnaire:query')")
+    @GetMapping(value = "/{questionnaireId}/info")
     public Response<Questionnaire> getInfo(@PathVariable("questionnaireId") Long questionnaireId) {
         return Response.success(questionnaireService.selectQuestionnaireByQuestionnaireId(questionnaireId));
     }

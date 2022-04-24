@@ -2,29 +2,43 @@ package cn.henry.common.enums;
 
 /**
  * 用户状态
- * 
+ *
  * @author ruoyi
  */
-public enum UserStatus
-{
-    OK("0", "正常"), DISABLE("1", "停用"), DELETED("2", "删除");
+public enum UserStatus {
+    /**
+     * 正常
+     */
+    OK("0", "正常"),
+
+    /**
+     * 停用
+     */
+    DISABLE("1", "停用"),
+
+    /**
+     * 删除
+     */
+    DELETED("2", "删除"),
+
+    /**
+     * 不允许登录该系统
+     */
+    NOT_ALLOWED("11", "不允许登录该系统");
 
     private final String code;
     private final String info;
 
-    UserStatus(String code, String info)
-    {
+    UserStatus(String code, String info) {
         this.code = code;
         this.info = info;
     }
 
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 
-    public String getInfo()
-    {
+    public String getInfo() {
         return info;
     }
 }
