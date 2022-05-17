@@ -75,6 +75,16 @@ public class VideoLibController extends BaseController {
     }
 
     /**
+     * 获取视频信息详细信息
+     */
+    @ApiOperation(value = "获取视频信息")
+    @PreAuthorize("@ss.hasPermi('resource:video:query')")
+    @GetMapping(value = "/infos/{ids}")
+    public Response<List<VideoListVo>> getInfoByIds(@PathVariable Long[] ids) {
+        return Response.success(videoService.selectVideoByIds(ids));
+    }
+
+    /**
      * 修改视频信息
      *
      * @param videoEditDto 视频信息

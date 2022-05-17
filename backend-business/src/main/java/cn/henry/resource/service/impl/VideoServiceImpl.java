@@ -72,6 +72,17 @@ public class VideoServiceImpl implements IVideoService {
     }
 
     /**
+     * 查询多个视频信息
+     *
+     * @param ids 视频信息主键数组
+     * @return 视频信息列表
+     */
+    @Override
+    public List<VideoListVo> selectVideoByIds(Long[] ids) {
+        return VideoConvertMapper.INSTANCE.videoToVideoListVo(videoMapper.selectVideoByIds(ids));
+    }
+
+    /**
      * 查询视频信息列表
      *
      * @param videoDTO 视频信息

@@ -2,10 +2,7 @@ package cn.henry.patient.domain;
 
 import cn.henry.common.core.domain.entity.SysUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -16,6 +13,8 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class Patient extends SysUser {
@@ -39,16 +38,15 @@ public class Patient extends SysUser {
      */
     private Long typeId;
 
-    //
-    ///**
-    // * 类型名
-    // */
-    //private String typeName;
-
     /**
      * 诊断意见
      */
     private String diagnosis;
+
+    /**
+     * 是否有打卡任务(默认0：无，1：有)
+     */
+    private Byte isClockIn;
 
     /**
      * 是否激活(默认0：未激活，1：激活)

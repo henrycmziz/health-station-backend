@@ -28,6 +28,7 @@
         <result property="typeId" column="type_id" />
         <!--        <result property="typeName" column="type_name" />-->
         <result property="diagnosis" column="diagnosis" />
+        <result property="isClockIn" column="is_clock_in" />
         <result property="isActive" column="is_active" />
         <association property="type" column="type_id" javaType="patientType" resultMap="typeResult" />
     </resultMap>
@@ -208,13 +209,14 @@
         update biz_patient_expand
         <set>
             <trim suffixOverrides=",">
-                <if test="userId != null and userId != 0">main_user_id = #{userId},</if>
+#                 <if test="userId != null and userId != 0">main_user_id = #{userId},</if>
                 <if test="typeId != null">type_id = #{typeId},</if>
                 <if test="diagnosis != null">diagnosis = #{diagnosis},</if>
+                <if test="isClockIn != null">is_clock_in = #{isClockIn}</if>
                 <if test="isActive != null">is_active = #{isActive}</if>
             </trim>
         </set>
-        where expand_id = #{expandId}
+        where expand_id = #{expandId} or main_user_id = #{mainUserId}
     </update>
 
     <update id="updatePatientStatus" parameterType="Patient">

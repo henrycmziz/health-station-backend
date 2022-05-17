@@ -47,6 +47,12 @@ public class HealthArticleListVo {
     private Long clicks;
 
     /**
+     * 缩略图
+     */
+    @ApiModelProperty(value = "缩略图")
+    private String thumbnail;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")

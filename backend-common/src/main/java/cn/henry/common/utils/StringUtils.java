@@ -153,6 +153,18 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return str.substring(1, str.length() - 1).split(",");
     }
 
+    public static Long[] StringArray2LongArray(String[] stringArray) {
+        List<Long> list = new ArrayList<>();
+        for (String str : stringArray) {
+            try {
+                list.add(Long.parseLong(str));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return list.toArray(new Long[list.size()]);
+    }
+
     /**
      * 去空格
      */

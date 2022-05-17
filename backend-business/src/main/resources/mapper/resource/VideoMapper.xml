@@ -47,6 +47,14 @@
         where id = #{id}
     </select>
 
+    <select id="selectVideoByIds" parameterType="Long" resultMap="VideoLibResult">
+        <include refid="selectVideoLibVo" />
+        where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
     <insert id="insertVideo" parameterType="Video" useGeneratedKeys="true" keyProperty="id">
         insert into biz_video_lib
         <trim prefix="(" suffix=")" suffixOverrides=",">

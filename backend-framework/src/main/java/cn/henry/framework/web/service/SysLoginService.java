@@ -63,10 +63,6 @@ public class SysLoginService {
         if (captchaOnOff) {
             validateCaptcha(username, code, uuid);
         }
-        //SysUser user = userService.selectUserByUserName(username);
-        //if (UserStatus.NOT_ALLOWED.getCode().equals(user.getUserType())) {
-        //    throw new ServiceException("对不起，您的账号：" + username + " 不被允许登录该系统");
-        //}
         // 用户验证
         Authentication authentication;
         try {

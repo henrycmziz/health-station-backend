@@ -1,6 +1,7 @@
 package cn.henry.common.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ public class BaseEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 搜索值 */
+    @JsonIgnore
     private String searchValue;
 
     /** 创建者 */
@@ -37,6 +39,7 @@ public class BaseEntity implements Serializable
     private String remark;
 
     /** 请求参数 */
+    @JsonIgnore
     private Map<String, Object> params;
 
     public String getSearchValue()

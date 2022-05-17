@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.patient.mapper.PatientClockInMapper">
+
+    <resultMap type="PatientClockIn" id="PatientClockInResult">
+        <result property="id" column="id" />
+        <result property="patientId" column="patient_id" />
+        <result property="modelId" column="model_id" />
+        <result property="startTime" column="start_time" />
+        <result property="endTime" column="end_time" />
+        <result property="remark" column="remark" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <resultMap id="PatientClockInPatientClockInDetailResult" type="PatientClockIn" extends="PatientClockInResult">
+        <collection property="patientClockInDetailList" notNullColumn="sub_id" javaType="java.util.List"
+            resultMap="PatientClockInDetailResult" />
+    </resultMap>
+
+    <resultMap type="patientClockInVo" id="PatientClockInVoResult">
+        <result property="modelName" column="model_name" />
+        <result property="completionRate" column="completionRate" />
+        <!--        <result property="modelId" column="model_id" />-->
+        <result property="startTime" column="start_time" />
+        <result property="endTime" column="end_time" />
+        <result property="remark" column="remark" />
+        <result property="createBy" column="create_by" />
+        <!--        <result property="createTime" column="create_time" />-->
+        <!--        <result property="updateBy" column="update_by" />-->
+        <!--        <result property="updateTime" column="update_time" />-->
+    </resultMap>
+
+    <resultMap id="ClockInDetailResult" type="patientClockInVo" extends="PatientClockInVoResult">
+        <collection property="clockInDetails" notNullColumn="sub_id" javaType="java.util.List"
+            resultMap="PatientClockInDetailResult" />
+    </resultMap>
+
+    <resultMap type="PatientClockInDetail" id="PatientClockInDetailResult">
+        <result property="id" column="sub_id" />
+        <result property="clockInId" column="sub_clock_in_id" />
+        <result property="clockInTime" column="sub_clock_in_time" />
+        <result property="isClockedIn" column="sub_is_clocked_in" />
+        <result property="submitTime" column="sub_submit_time" />
+        <result property="comment" column="sub_comment" />
+    </resultMap>
+
+    <sql id="selectPatientClockInVo">
+        select id,
+               patient_id,
+               model_id,
+               start_time,
+               end_time,
+               remark,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from biz_patient_clock_in
+    </sql>
+
+    <select id="selectPatientClockInList" parameterType="PatientClockIn" resultMap="PatientClockInResult">
+        <include refid="selectPatientClockInVo" />
+        <where>
+            <if test="patientId != null ">and patient_id = #{patientId}</if>
+            <if test="modelId != null ">and model_id = #{modelId}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectPatientClockInWithDetailById" parameterType="String"
+        resultMap="PatientClockInPatientClockInDetailResult">
+        select a.id,
+               a.patient_id,
+               a.model_id,
+               a.start_time,
+               a.end_time,
+               a.remark,
+               a.create_by,
+               a.create_time,
+               a.update_by,
+               a.update_time,
+               b.id            as sub_id,
+               b.clock_in_id   as sub_clock_in_id,
+               b.clock_in_time as sub_clock_in_time,
+               b.is_clocked_in as sub_is_clocked_in,
+               b.submit_time   as sub_submit_time,
+               b.comment       as sub_comment
+        from biz_patient_clock_in a
+                 left join biz_patient_clock_in_detail b on b.clock_in_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectPatientClockInById" parameterType="String" resultType="patientClockInPlanVo">
+        select a.id as clockInDetailId, bpci.remark, brm.model_video_ids as modelVideoIds
+        from biz_patient_clock_in_detail a
+                 left join biz_patient_clock_in bpci on a.clock_in_id = bpci.id
+                 left join biz_rehabilitation_model brm on bpci.model_id = brm.id
+        where a.clock_in_id = #{id}
+          and a.clock_in_time = #{clockInTime}
+    </select>
+
+    <select id="selectPatientClockInListByPatientId" resultMap="ClockInDetailResult">
+        select brm.model_name,
+               a.start_time,
+               a.end_time,
+               a.remark,
+               a.create_by,
+               a.create_time,
+               res.completionRate,
+               b.id            as sub_id,
+               b.clock_in_id   as sub_clock_in_id,
+               b.clock_in_time as sub_clock_in_time,
+               b.is_clocked_in as sub_is_clocked_in,
+               b.submit_time   as sub_submit_time,
+               b.comment       as sub_comment
+        from biz_patient_clock_in a
+                 left join biz_patient_clock_in_detail b on b.clock_in_id = a.id
+                 left join biz_rehabilitation_model brm on a.model_id = brm.id
+                 left join (select bpci.id,
+                                   round(sum(if(bpcid.is_clocked_in = 1, 1, 0)) / count(*) * 100, 2) as completionRate
+                            from biz_patient_clock_in bpci
+                                     left join biz_patient_clock_in_detail bpcid on bpci.id = bpcid.clock_in_id
+                            where patient_id = #{patientId}
+                            group by bpci.create_time) res on res.id = a.id
+        where a.patient_id = #{patientId}
+        order by b.clock_in_time desc
+    </select>
+
+    <select id="selectDetailListByPatientId" resultMap="PatientClockInDetailResult">
+        select b.id            as sub_id,
+               b.clock_in_id   as sub_clock_in_id,
+               b.clock_in_time as sub_clock_in_time,
+               b.is_clocked_in as sub_is_clocked_in,
+               b.submit_time   as sub_submit_time,
+               b.comment       as sub_comment
+        from biz_patient_clock_in a
+                 left join biz_patient_clock_in_detail b on b.clock_in_id = a.id
+        where a.patient_id = #{patientId}
+        order by b.clock_in_time desc
+    </select>
+
+    <select id="selectIsHaveMoreClockInTask" resultType="java.lang.Integer">
+        select count(*)
+        from biz_patient_clock_in a
+                 left join biz_patient_clock_in_detail bpcid on a.id = bpcid.clock_in_id
+        where a.patient_id = #{pid}
+          and bpcid.clock_in_time > date_format(sysdate(), '%y-%m-%d')
+        limit 1
+    </select>
+
+    <insert id="insertPatientClockIn" parameterType="PatientClockIn">
+        insert into biz_patient_clock_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="patientId != null">patient_id,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="patientId != null">#{patientId},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchPatientClockInDetail">
+        insert into biz_patient_clock_in_detail( id, clock_in_id, clock_in_time)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.clockInId}, #{item.clockInTime})
+        </foreach>
+    </insert>
+
+    <update id="updatePatientClockIn" parameterType="PatientClockIn">
+        update biz_patient_clock_in
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="patientId != null">patient_id = #{patientId},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="finishClockInTask" parameterType="patientClockInDetail">
+        update biz_patient_clock_in_detail
+        set submit_time   = sysdate(),
+            is_clocked_in = 1,
+            comment       = #{comment}
+        where id = #{id}
+          and clock_in_time = #{clockInTime}
+    </update>
+
+    <delete id="deletePatientClockInById" parameterType="String">
+        delete
+        from biz_patient_clock_in
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePatientClockInByIds" parameterType="String">
+        delete from biz_patient_clock_in where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePatientClockInDetailByClockInIds" parameterType="String">
+        delete from biz_patient_clock_in_detail where clock_in_id in
+        <foreach item="clockInId" collection="array" open="(" separator="," close=")">
+            #{clockInId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePatientClockInDetailByClockInId" parameterType="String">
+        delete
+        from biz_patient_clock_in_detail
+        where clock_in_id = #{clockInId}
+    </delete>
+</mapper>

@@ -22,6 +22,14 @@ public interface VideoMapper {
     Video selectVideoById(Long id);
 
     /**
+     * 查询多个视频信息
+     *
+     * @param ids 视频信息主键数组
+     * @return 视频信息列表
+     */
+    List<Video> selectVideoByIds(Long[] ids);
+
+    /**
      * 查询视频信息列表
      *
      * @param videoDTO 视频信息

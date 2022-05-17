@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.henry.resource.mapper.RehabilitationModelMapper">
+
+    <resultMap type="cn.henry.resource.domain.RehabilitationModel" id="RehabilitationModelResult">
+        <result property="id" column="id" />
+        <result property="modelName" column="model_name" />
+        <result property="modelRemark" column="model_remark" />
+        <result property="modelArticleIds" column="model_article_ids" />
+        <result property="modelVideoIds" column="model_video_ids" />
+        <result property="modelStatus" column="model_status" />
+        <result property="delFlag" column="del_flag" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectRehabilitationModelVo">
+        select *
+        from biz_rehabilitation_model
+    </sql>
+
+    <select id="selectRehabilitationModelList" parameterType="RehabilitationModel"
+        resultMap="RehabilitationModelResult">
+        <include refid="selectRehabilitationModelVo" />
+        <where>
+            <if test="modelName != null  and modelName != ''">and model_name like concat('%', #{modelName}, '%')</if>
+            <if test="modelRemark != null  and modelRemark != ''">and model_remark = #{modelRemark}</if>
+            <if test="modelArticleIds != null  and modelArticleIds != ''">and model_article_ids = #{modelArticleIds}
+            </if>
+            <if test="modelVideoIds != null  and modelVideoIds != ''">and model_video_ids = #{modelVideoIds}</if>
+            <if test="modelStatus != null ">and model_status = #{modelStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectRehabilitationModelById" parameterType="Long" resultMap="RehabilitationModelResult">
+        <include refid="selectRehabilitationModelVo" />
+        where id = #{id}
+    </select>
+
+    <insert id="insertRehabilitationModel" parameterType="RehabilitationModel" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_rehabilitation_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelName != null and modelName != ''">model_name,</if>
+            <if test="modelRemark != null">model_remark,</if>
+            <if test="modelArticleIds != null">model_article_ids,</if>
+            <if test="modelVideoIds != null">model_video_ids,</if>
+            <if test="modelStatus != null">model_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelName != null and modelName != ''">#{modelName},</if>
+            <if test="modelRemark != null">#{modelRemark},</if>
+            <if test="modelArticleIds != null">#{modelArticleIds},</if>
+            <if test="modelVideoIds != null">#{modelVideoIds},</if>
+            <if test="modelStatus != null">#{modelStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRehabilitationModel" parameterType="RehabilitationModel">
+        update biz_rehabilitation_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelName != null and modelName != ''">model_name = #{modelName},</if>
+            <if test="modelRemark != null">model_remark = #{modelRemark},</if>
+            <if test="modelArticleIds != null">model_article_ids = #{modelArticleIds},</if>
+            <if test="modelVideoIds != null">model_video_ids = #{modelVideoIds},</if>
+            <if test="modelStatus != null">model_status = #{modelStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRehabilitationModelById" parameterType="Long">
+        delete
+        from biz_rehabilitation_model
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteRehabilitationModelByIds" parameterType="String">
+        delete from biz_rehabilitation_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
