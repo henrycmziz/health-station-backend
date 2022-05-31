@@ -88,7 +88,7 @@ public class PatientClockInServiceImpl implements IPatientClockInService {
     public PatientClockInPlanVo selectPatientClockInById(String id, String clockInTime) {
         PatientClockInPlanVo vo = patientClockInMapper.selectPatientClockInById(id, clockInTime);
         String[] ids = vo.getModelVideoIds().split(",");
-        if (ids.length > 0) {
+        if (ids.length > 0 && !ids[0].equals("")) {
             vo.setVideoInfos(videoMapper.selectVideoByIds(StringUtils.StringArray2LongArray(ids)));
         }
         return vo;
